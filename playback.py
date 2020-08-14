@@ -1,21 +1,16 @@
 import pyautogui
+import pydirectinput
 from time import sleep, time
 import os
 import json
 
 
 def main():
-    
     initializePyAutoGUI()
-    countdownTimer()
+    countdownTimer(3)
 
-    playActions("earthstation_goto_trader.json")
-    sleep(2.00)
-    playActions("earthstation_do_trading.json")
-    sleep(2.00)  # After trading wait for zoom out animation to finish
-    playActions("earthstation_goto_ship.json")
-    sleep(10.00)  # Allow time for the outside world to load
-    playActions("earthstation_goto_lokistation.json")
+    # Change the name here for different playbacks
+    playActions("randomTest.json")
 
     print("Done")
 
@@ -27,10 +22,10 @@ def initializePyAutoGUI():
     pyautogui.FAILSAFE = True
 
 
-def countdownTimer():
+def countdownTimer(count=10):
     # Countdown timer
     print("Starting", end="", flush=True)
-    for i in range(0, 10):
+    for i in range(0, count):
         print(".", end="", flush=True)
         sleep(1)
     print("Go")
@@ -40,14 +35,14 @@ def playActions(filename):
     # Read the file
     script_dir = os.path.dirname(__file__)
     filepath = os.path.join(
-        script_dir, 
-        'recordings', 
+        script_dir,
+        'recordings',
         filename
     )
     with open(filepath, 'r') as jsonfile:
         # parse the json
         data = json.load(jsonfile)
-        
+
         # loop over each action
         # Because we are not waiting any time before executing the first action, any delay before the initial
         # action is recorded will not be reflected in the playback.
@@ -61,14 +56,14 @@ def playActions(filename):
             # perform the action
             if action['type'] == 'keyDown':
                 key = convertKey(action['button'])
-                pyautogui.keyDown(key)
+                pydirectinput.keyDown(key)
                 print("keyDown on {}".format(key))
             elif action['type'] == 'keyUp':
                 key = convertKey(action['button'])
-                pyautogui.keyUp(key)
+                pydirectinput.keyUp(key)
                 print("keyUp on {}".format(key))
             elif action['type'] == 'click':
-                pyautogui.click(action['pos'][0], action['pos'][1], duration=0.25)
+                pydirectinput.click(action['pos'][0], action['pos'][1], duration=0.25)
                 print("click on {}".format(action['pos']))
 
             # then sleep until next action should occur

@@ -3,14 +3,18 @@ from time import time
 import json
 import os
 
+# Change the name here to record a different name
+OUTPUT_FILENAME = 'randomTest'
 
-OUTPUT_FILENAME = 'actions_test_01'
 # declare mouse_listener globally so that keyboard on_release can stop it
 mouse_listener = None
+
 # declare our start_time globally so that the callback functions can reference it
 start_time = None
+
 # keep track of unreleased keys to prevent over-reporting press events
 unreleased_keys = []
+
 # storing all input events
 input_events = []
 
