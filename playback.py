@@ -6,32 +6,31 @@ import json
 
 
 def main():
-    initializePyAutoGUI()
-    countdownTimer(3)
+    initialize_pyautogui()
+    countdown_timer(3)
 
     # Change the name here for different playbacks
-    playActions("randomTest.json")
+    play_actions("randomTest.json")
 
     print("Done")
 
 
-def initializePyAutoGUI():
+def initialize_pyautogui():
     # Initialized PyAutoGUI
     # https://pyautogui.readthedocs.io/en/latest/introduction.html
     # When fail-safe mode is True, moving the mouse to the upper-left corner will abort your program.
     pyautogui.FAILSAFE = True
 
 
-def countdownTimer(count=10):
-    # Countdown timer
-    print("Starting", end="", flush=True)
-    for i in range(0, count):
-        print(".", end="", flush=True)
+def countdown_timer(time_to_wait=10):
+    print("Countdown:")
+    for i in range(time_to_wait, 0, -1):
+        print(i, end=" ", flush=True)
         sleep(1)
-    print("Go")
+    print("Start")
 
 
-def playActions(filename):
+def play_actions(filename):
     # Read the file
     script_dir = os.path.dirname(__file__)
     filepath = os.path.join(
@@ -55,11 +54,11 @@ def playActions(filename):
 
             # perform the action
             if action['type'] == 'keyDown':
-                key = convertKey(action['button'])
+                key = convert_key(action['button'])
                 pydirectinput.keyDown(key)
                 print("keyDown on {}".format(key))
             elif action['type'] == 'keyUp':
-                key = convertKey(action['button'])
+                key = convert_key(action['button'])
                 pydirectinput.keyUp(key)
                 print("keyUp on {}".format(key))
             elif action['type'] == 'click':
@@ -89,7 +88,7 @@ def playActions(filename):
 # convert pynput button keys into pyautogui keys
 # https://pynput.readthedocs.io/en/latest/_modules/pynput/keyboard/_base.html#Key
 # https://pyautogui.readthedocs.io/en/latest/keyboard.html
-def convertKey(button):
+def convert_key(button):
     PYNPUT_SPECIAL_CASE_MAP = {
         'alt_l': 'altleft',
         'alt_r': 'altright',
